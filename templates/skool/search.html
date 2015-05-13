@@ -1,0 +1,69 @@
+{% extends "skool/base.html" %}
+
+{# http://bootsnipp.com/snippets/featured/search-results #}
+
+{% block body_block %}
+    <div class="container">
+
+    <hgroup class="mb20">
+        <h1>Search Results</h1>
+        <h2 class="lead"><strong class="text-danger">{{ itemsfound }}</strong> results were found for the search for <strong class="text-danger">{{ searchquery }}</strong></h2>
+    </hgroup>
+
+    <section class="col-xs-12 col-sm-6 col-md-12">
+        {% for page in pages %}
+            <article class="search-result row">
+                {% if page.0.parent.image_url %}
+                    <div class="col-xs-12 col-sm-12 col-md-3">
+                        <a href="{{page.0.url}}" title="Lorem ipsum" class="thumbnail"><img src="{{page.0.parent.image_url}}" alt="Website thumbnail" /></a>
+                    </div>
+                {% endif %}
+
+                <div class="col-xs-12 col-sm-12 col-md-2">
+                    <ul class="meta-search">
+                        {% if page.0.parent.published %}
+                            <li><i class="glyphicon glyphicon-calendar"></i> <span>{{page.0.parent.published}}</span></li>
+                        {% endif %}
+                        {% if page.0.parent.show %}
+                            <li><i class="glyphicon glyphicon-eye-open"></i> <span>{{page.0.parent.show}}</span></li>
+                        {% endif %}
+                        {% if page.0.parent.language %}
+                            <li><i class="glyphicon glyphicon-comment"></i> <span>{{page.0.parent.language.name}}</span></li>
+                        {% endif %}
+                        {% if page.0.parent.keywords %}
+                            <li><i class="glyphicon glyphicon-tags"></i> <span>
+                            {% for c in page.0.parent.keywords %}
+                                {{c.name}},
+                            {% endfor %}
+                            </span></li>
+                        {% endif %}
+                        <li><i class="glyphicon glyphicon-tags"></i> <span>
+                        {% for c in page.0.label_model %}
+                            {{c.name}},
+                        {% endfor %}
+                        </span></li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                    <h3><a href="{{ page.0.url }}" title="">
+                        {% if page.0.parent.title %}
+                            {{ page.0.parent.title }}
+                        {% else %}
+                            {{ page.0.url }}
+                        {% endif %}
+                    </a></h3>
+                    <p>{{ page.0.btext|truncatechars:800|safe }}</p>
+                    <span class="plus" data-toggle="collapse" data-target="#similar{{ page.0.id }}"><i class="glyphicon glyphicon-plus"></i></span>
+                    <div id="similar{{ page.0.id }}" class="collapse">
+                        {% for a in page.1 %}
+                            <a href="{{ a.0 }}">{{ a.1 }}</a><br>
+                        {% endfor %}
+                    </div>
+                </div>
+                <span class="clearfix borda"></span>
+            </article>
+        {% endfor %}
+
+    </section>
+</div>
+{% endblock body_block %}

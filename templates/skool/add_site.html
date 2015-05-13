@@ -1,0 +1,28 @@
+{% extends "skool/base.html" %}
+
+{% load staticfiles %}
+{# <link rel="stylesheet" href="{% static "css/btext.css" %}"></script> #}
+
+{% block body_block %}
+
+    <h4>{{ result|safe }}</h4>
+
+    <h3>Add site</h3>
+
+    <form method="post" action=".">
+        {% csrf_token %}
+        <input type="text" name="site" size=60, value="www.gvh.cz" />
+        <input type="submit" value="Odeslat">
+    </form>
+
+
+    <h3>Add single page</h3>
+    <form method="post" action=".">
+        {% csrf_token %}
+        <input type="text" name="page" size=60, value="http://www.gvh.cz/index.php/reditelna/informace-39570" />
+        <input type="submit" value="Odeslat">
+    </form>
+
+
+{% endblock body_block %}
+
