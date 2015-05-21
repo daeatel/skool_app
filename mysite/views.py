@@ -2,6 +2,7 @@
 # encoding=utf-8
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.core.paginator import Paginator
 from skool.search import search as esearch
 
 
@@ -10,17 +11,18 @@ def index(request):
     return render_to_response('skool/index.html', None, context)
 
 
-def search(request):
+def search(request, page):
     context = RequestContext(request)
     q = request.GET['q']
     (hits, results) = esearch(request.GET['q'], 'btext', fuzzy=False, recommend=True, highlight=['<mark>', '</mark>'])
-    return render_to_response('skool/search.html', {'pages': results, 'searchquery': q, 'itemsfound': hits}, context)
+    p = Paginator(results, 10)
+    actual = p.page(page)
+    return render_to_response('skool/search.html', {'pages': actual.object_list, 'searchquery': q, 'itemsfound': hits, 'paginator': p, 'actualpage': actual}, context)
 
 
 def monitor(request, url):
     context = RequestContext(request)
     (hits, results) = esearch(url, 'url')
-    print results
     return render_to_response('skool/search.html', {'pages': results, 'searchquery': url, 'itemsfound': hits}, context)
 
 

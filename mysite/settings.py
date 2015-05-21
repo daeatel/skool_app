@@ -2,6 +2,7 @@
 import os
 import socket
 import mongoengine
+from skool.settings import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -39,7 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mysite',
-    'debug_toolbar'
+    'debug_toolbar',
+    'bootstrap_pagination',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -102,11 +104,11 @@ else:
 
 SESSION_ENGINE = 'mongoengine.django.sessions'
 
-_MONGODB_USER = ''
-_MONGODB_PASSWD = ''
-_MONGODB_HOST = 'localhost'
-_MONGODB_NAME = 'skool'
-_MONGODB_PORT = 27017
+_MONGODB_USER = MONGODB_USER
+_MONGODB_PASSWD = MONGODB_USER
+_MONGODB_HOST = MONGODB_HOST
+_MONGODB_NAME = MONGODB_DB
+_MONGODB_PORT = MONGODB_PORT
 _MONGODB_DATABASE_HOST = 'mongodb://%s/%s' % (_MONGODB_HOST, _MONGODB_NAME)
 
 if ON_PAAS:
@@ -145,6 +147,10 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(BASE_DIR, "static"),
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',)
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".

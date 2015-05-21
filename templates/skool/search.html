@@ -2,6 +2,8 @@
 
 {# http://bootsnipp.com/snippets/featured/search-results #}
 
+{% load bootstrap_pagination %}
+
 {% block body_block %}
     <div class="container">
 
@@ -63,6 +65,10 @@
                 <span class="clearfix borda"></span>
             </article>
         {% endfor %}
+
+        {% if actualpage %}
+            {% bootstrap_paginate actualpage range=10 url_view_name="search"%}
+        {% endif %}
 
     </section>
 </div>
